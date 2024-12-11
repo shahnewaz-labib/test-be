@@ -13,6 +13,17 @@ router.get("/", (req: Request, res: Response) => {
 router.post("/create", async (req: Request, res: Response) => {
 	try {
 		const newUser = new User(req.body);
+
+		if (!newUser.email || newUser.email === "") {
+			res.status(400).send({ errors: { email: "Email is required" } });
+			return;
+		}
+
+		if (!newUser.name || newUser.name === "") {
+			res.status(400).send({ errors: { name: "Name is required" } });
+			return;
+		}
+
 		await newUser.save();
 		res.status(201).send(newUser);
 	} catch (error) {

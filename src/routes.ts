@@ -7,14 +7,13 @@ const router = express.Router();
 const User = mongoose.model("User", userSchema);
 
 router.get("/", (req: Request, res: Response) => {
-	res.send("Hello World!");
+	res.status(200).send("Hello World!");
 });
 
 router.post("/create", async (req: Request, res: Response) => {
 	try {
 		const newUser = new User(req.body);
 		await newUser.save();
-		console.log(newUser);
 		res.status(201).send(newUser);
 	} catch (error) {
 		console.error(error);

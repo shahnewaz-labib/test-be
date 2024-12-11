@@ -9,15 +9,15 @@ export const app = express();
 app.use(express.json());
 app.use(routes);
 
-console.log(process.env.MONGODB_URI);
+if (process.env.NODE_ENV !== "test") {
+	mongoose
+		.connect(process.env.MONGODB_URI as string)
+		.then(() => console.log("Connected to MongoDB"))
+		.catch((err) => console.error("Error connecting to MongoDB:", err.message));
 
-mongoose
-	.connect(process.env.MONGODB_URI as string)
-	.then(() => console.log("Connected to MongoDB"))
-	.catch((err) => console.error("Error connecting to MongoDB:", err.message));
-
-app.listen(PORT, () => {
-	console.log(`Server running on http://localhost:${PORT}`);
-});
+	app.listen(PORT, () => {
+		console.log(`Server running on http://localhost:${PORT}`);
+	});
+}
 
 export default app;
